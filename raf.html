@@ -1,0 +1,27 @@
+<script>
+var setCallback;
+if (typeof requestIdleCallback != "undefined") {
+  setCallback = requestIdleCallback;
+} else {
+  setCallback = setImmediate;
+}
+
+var onRAF = function() {
+  start = performance.now();
+  console.log("raf");
+  var i;
+  // Take up the full frame budget with RAF
+  while (performance.now() < start + 16.67) {
+    i++;
+  }
+  requestAnimationFrame(onRAF);
+}
+
+var onIdle = function(e) {
+  console.log("idle");
+  setCallback(onIdle);
+}
+
+setCallback(onIdle);
+requestAnimationFrame(onRAF);
+</script>

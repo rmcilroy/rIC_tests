@@ -1,0 +1,27 @@
+<script>
+var setCallback;
+if (typeof requestIdleCallback != "undefined") {
+  setCallback = requestIdleCallback;
+} else {
+  setCallback = setImmediate;
+}
+
+var onTimeout = function() {
+  console.log("timeout");
+  setTimeout(onTimeout, 0);
+  start = performance.now();
+  // Use up time to avoid timeout clamp.
+  var i;
+  while (start + 4 > performance.now()) {
+    i++;
+  }
+}
+
+var onIdle = function() {
+  console.log("idle");
+  setCallback(onIdle);
+}
+
+setCallback(onIdle);
+setTimeout(onTimeout, 0);
+</script>

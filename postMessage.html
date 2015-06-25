@@ -1,0 +1,23 @@
+<script>
+var setCallback;
+if (requestIdleCallback) {
+  setCallback = requestIdleCallback;
+} else {
+  setCallback = setImmediate;
+}
+
+var onMessage = function(event) {
+  console.log("postMessage");
+  postMessage("", "*");
+}
+
+var onIdle = function() {
+  console.log("idle");
+  setCallback(onIdle);
+}
+
+addEventListener("message", onMessage, false);
+
+setCallback(onIdle);
+postMessage("", "*");
+</script>
